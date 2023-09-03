@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate , login , logout
@@ -50,7 +50,7 @@ def EditUserInfo(request):
     if request.method == 'POST':
         form = UserDataRegisterForm(request.POST)
         form.email = data[0].email
-        print( data[0].email, form)
+        print(data[0].email,form['email'])
         if form.is_valid():
             form.save()
             return render(request,'edit_user_info.html', {'message':'Added Sucessfully', 'form': ''});
@@ -84,18 +84,64 @@ def LoanRequest(request):
 
     if request.method == 'POST':
         form = LoanRequestForm(request.POST)
+        print(request.POST)
 
         if form.is_valid():
             loan_obj = form.save(commit=False)
             loan_obj.customer = request.user
             form.save()
-            return redirect('/')
-
-    return render(request, 'loan_request.html', context={'form': form})
+            return redirect('/loanhistory')
+        else:
+            return render(request, 'loan_request.html', context={'form': form})
+    else:
+        return render(request, 'loan_request.html', context={'form': form})
 
 @login_required(login_url='/register')
 def LoanHistory(request):
-    # return HttpResponse('works')
     loans = LoanRequestModel.objects.filter(
         customer=request.user)
     return render(request, 'loan_history.html', context={'loans': loans})
+
+@login_required(login_url='/register')
+def GetBalanceSheet(request):
+    if request.method == 'POST':
+            if 'balanceReport' in request.POST:
+
+                form = LoanRequestForm(request.POST)
+
+                balanceSheet =[{
+                "year": 2020,
+                "month": 12,
+                "profitOrLoss": 250000,
+                "assetsValue": 1234
+                },
+                {
+                    "year": 2020,
+                    "month": 11,
+                    "profitOrLoss": 1150,
+                    "assetsValue": 5789
+                },
+                {
+                    "year": 2020,
+                    "month": 10,
+                    "profitOrLoss": 2500,
+                    "assetsValue": 22345
+                },
+                {
+                    "year": 2020,
+                    "month": 9,
+                    "profitOrLoss": -187000,
+                    "assetsValue": 223452
+                }];
+                return render(request, 'loan_request.html', context={'form': form, 'balanceSheet': balanceSheet})
+            else:
+                LoanRequest(request)
+    form = LoanRequestForm()
+    return render(request, 'loan_request.html', context={'form': form})
+
+
+
+
+
+
+
