@@ -12,19 +12,22 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 def register(request):
+    print(request.method)
     if request.method == 'POST':
+        print('req=',request.POST)
         form = UserRegisterForm(request.POST)
+        print(form.is_valid())
         if form.is_valid():
             form.save()
-            # username = form.cleaned_data.get('username')
-            # messages.success(request, f'Your account has been created! You are now able to log in')
             return redirect('/login_page')
+        else:
+            return render(request, 'register_user.html', {'form': form})
     else:
         form = UserRegisterForm()
-        return render(request, 'register.html', {'form': form})
+        return render(request, 'register_user.html', {'form': form})
 
 def login_page(request):
-    return render(request,'login.html')
+    return render(request,'login_user.html')
 
 def login1(request):
     if request.method == "POST":
@@ -42,7 +45,7 @@ def login1(request):
         else:
                 return redirect('/login_page')
     else:
-        return render(request,'login.html')
+        return render(request,'login_user.html')
 
 @login_required(login_url='/register')
 def home(request):

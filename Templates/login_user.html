@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+      {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load widget_tweaks %}
+        {% load static %}
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+
+<div class="container my-5">
+    <div class="row mb-5">
+        <div class="col-md-6">
+        <img src="{% static 'images/business_loan.png' %}" class="img-fluid mx-auto" alt="Background Image" srcset="">
+        </div>
+        <div class="p-5 m-auto rounded shadow-lg col-md-6 bg-body">
+            <h3 class="text-center text-success"> Login </h3>
+            </h3>
+            <form  action="/login1"  method="POST" class="my-5">
+                {% csrf_token %}
+                <div class="mb-4 input-group">
+                    <div class="input-group-text">Name</div>
+                    <input type="text" class="form-control" required name="name1">
+                </div>
+                <div class="mb-4 form-outline">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" required name="password1">
+                </div>
+
+                <button type="submit" class="mb-4 btn btn-primary btn-block">Send Request</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
