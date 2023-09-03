@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 
 
 # Create your views here.
-def register(request):
+def Register(request):
     print(request.method)
     if request.method == 'POST':
         print('req=',request.POST)
@@ -26,10 +26,7 @@ def register(request):
         form = UserRegisterForm()
         return render(request, 'register_user.html', {'form': form})
 
-def login_page(request):
-    return render(request,'login_user.html')
-
-def login1(request):
+def LoginPage(request):
     if request.method == "POST":
         username = request.POST.get('name1')
         password = request.POST.get('password1')
@@ -39,7 +36,7 @@ def login1(request):
             if user.is_active:
                 login(request, user)
                 nm={'nm':nm}
-                return redirect('/home')
+                return redirect('/edit_user_info')
             else:
                 return redirect('/login_page')
         else:
@@ -48,7 +45,7 @@ def login1(request):
         return render(request,'login_user.html')
 
 @login_required(login_url='/register')
-def home(request):
+def EditUserInfo(request):
     data = User.objects.filter(username=request.user)
     if request.method == 'POST':
         form = UserDataRegisterForm(request.POST)
@@ -56,9 +53,9 @@ def home(request):
         print( data[0].email, form)
         if form.is_valid():
             form.save()
-            return render(request,'home.html', {'message':'Added Sucessfully', 'form': ''});
+            return render(request,'edit_user_info.html', {'message':'Added Sucessfully', 'form': ''});
         else:
-            return render(request, 'home.html',{'message':'something went wrong pls try again','form': form })
+            return render(request, 'edit_user_info.html',{'message':'Something went wrong pls try again','form': form })
     new_form = True
     userDataInfo = UserData.objects.all()
     for i in userDataInfo:
@@ -67,15 +64,15 @@ def home(request):
             break
     if  new_form:
         form = UserDataRegisterForm()
-        return render(request,'home.html',{'form':form});
+        return render(request,'edit_user_info.html',{'form':form, 'message': 'Fill details'});
 
     else:
         customer = UserData.objects.get(email=request.user)
         form = UserDataRegisterForm(instance=customer)
-        return render(request,'home.html',{'form':form, 'message': 'update details'});
+        return render(request,'edit_user_info.html',{'form':form, 'message': 'Update details'});
 
 @login_required(login_url='/register')
-def logout_page(request):
+def LogoutPage(request):
     logout(request)
     return redirect("/")
 

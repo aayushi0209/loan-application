@@ -31,16 +31,13 @@
 
 
 <div class = 'container mt-10'>
-      {% if message %}
-    <h3 class="text-center">{{message}}</h3>
-      {% endif %}
   {% if form != '' %}
         <div class="container my-5">
     <div class="row mb-5">
         <div class="p-5 m-auto rounded shadow-lg col-md-6 bg-body">
-            <h3 class="text-center text-success"> Fill Details</h3>
+            <h3 class="text-center text-success"> {{message}}</h3>
             </h3>
-            <form action="/home"  method="POST" class="my-5">
+            <form action="/edit_user_info"  method="POST" class="my-5">
                 {% csrf_token %}
                 <div class="mb-4 input-group">
                     <div class="input-group-text">First Name</div>
