@@ -18,7 +18,7 @@
             <h3 class="text-center text-success"> Request For Loan</h3>
             </h3>
 
-            <form method="POST" class="my-5" action="/getBalanceSheet">
+            <form method="POST" class="my-5" action="/loan_request">
                 {% csrf_token %}
                 <div class="mb-4 input-group">
                     <div class="input-group-text">Loan Category</div>
@@ -41,6 +41,8 @@
                     {% render_field form.accounting_provider|attr:'required:true' class="form-control" %}
                 </div>
                 <button type="submit" class="mb-4 btn btn-primary btn-block" name="balanceReport">balance report</button>
+
+                {{form.errors}}
                 {% if balanceSheet %}
                   <table class="table text-center table-light table-hover table-bordered table-striped">
                     <thead class="bg-dark ">
@@ -69,7 +71,6 @@
                 </table>
                 {% endif %}
                 <button type="submit" class="mb-4 btn btn-primary btn-block" name="saveRquest">Send Request</button>
-
             </form>
 
         </div>

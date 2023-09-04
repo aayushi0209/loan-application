@@ -10,5 +10,5 @@ urlpatterns = [
     path('loan_request', views.LoanRequest),
     path('loanhistory', views.LoanHistory),
     path('edit_user_info', views.EditUserInfo),
-    path('getBalanceSheet',views.GetBalanceSheet)
+    path('request_decision', views.requestDecision)
 ]

@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator , MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -52,10 +52,10 @@ class LoanRequest(models.Model):
     request_date = models.DateField(auto_now_add=True)
     status_date = models.CharField(
         max_length=150, null=True, blank=True, default=None)
-    reason = models.TextField()
+    reason = models.TextField(blank= False)
     status = models.CharField(max_length=100, default='pending')
-    amount = models.PositiveIntegerField(default =0)
-    year = models.PositiveIntegerField(default=1)
-    accounting_provider = models.CharField(choices= ACCOUNTING_PROVIDER , max_length=100)
+    amount = models.PositiveIntegerField(default =0, validators=[MinValueValidator(1), MaxValueValidator(100000000)],blank= False)
+    year = models.PositiveIntegerField(default=1,  validators=[MinValueValidator(1), MaxValueValidator(30)], blank= False)
+    accounting_provider = models.CharField(choices= ACCOUNTING_PROVIDER , max_length=100 , blank= False)
 
 
